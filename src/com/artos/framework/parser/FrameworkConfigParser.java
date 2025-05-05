@@ -23,6 +23,7 @@ package com.artos.framework.parser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.Paths;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -47,7 +48,8 @@ import org.w3c.dom.NodeList;
 import com.artos.framework.FWStaticStore;
 
 /**
- * This class is responsible for storing framework Configuration. During test suit execution XML file will be searched at location ./conf
+ * This class is responsible for storing framework Configuration. During test
+ * suit execution XML file will be searched at location ./conf
  */
 public class FrameworkConfigParser {
 
@@ -82,8 +84,8 @@ public class FrameworkConfigParser {
 	private boolean enableHTMLLog = false;
 	private boolean enableRealTimeLog = false;
 	private boolean enableExtentReport = true;
-	private boolean enableJUnitReport = true;
-	private boolean enableLogCleanup = true;
+	private boolean enableJUnitReport = false;
+	private boolean enableLogCleanup = false;
 
 	// Dashboard
 	private String dashBoardRemoteIP = "127.0.0.1";
@@ -98,22 +100,25 @@ public class FrameworkConfigParser {
 	private boolean enableArtosDebug = false;
 	private boolean generateEclipseTemplate = true;
 	private boolean generateIntelliJTemplate = false;
-	private boolean generateTestScript = true;
+	private boolean generateTestScript = false;
 	private boolean stopOnFail = false;
 	private boolean enableDashBoard = false;
 
 	/**
 	 * Constructor
 	 * 
-	 * @param createIfNotPresent enables creation of default configuration file if not present
-	 * @param profileName profile name for choosing correct framework configuration
+	 * @param createIfNotPresent enables creation of default configuration file if
+	 *                           not present
+	 * @param profileName        profile name for choosing correct framework
+	 *                           configuration
 	 */
 	public FrameworkConfigParser(boolean createIfNotPresent, String profileName) {
 		this.profileName = profileName;
 
 		// If profile name is not provided then apply default settings
 		// if (null == profileName || "".equals(profileName)) {
-		// System.err.println("Profile Name is not provided. Default Framework Config is applied");
+		// System.err.println("Profile Name is not provided. Default Framework Config is
+		// applied");
 		// return;
 		// }
 
@@ -121,9 +126,11 @@ public class FrameworkConfigParser {
 	}
 
 	/**
-	 * Reads Framework configuration file and set global values so framework configurations is available to everyone
+	 * Reads Framework configuration file and set global values so framework
+	 * configurations is available to everyone
 	 * 
-	 * @param createIfNotPresent enables creation of default configuration file if not present
+	 * @param createIfNotPresent enables creation of default configuration file if
+	 *                           not present
 	 */
 	public void readXMLConfig(boolean createIfNotPresent) {
 
@@ -173,7 +180,8 @@ public class FrameworkConfigParser {
 		SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		docFactory.setNamespaceAware(true);
 		docFactory.setValidating(true);
-		Schema schema = sf.newSchema(new StreamSource(FWStaticStore.CONFIG_BASE_DIR + File.separator + "framework_configuration.xsd"));
+		Schema schema = sf.newSchema(
+				new StreamSource(FWStaticStore.CONFIG_BASE_DIR + File.separator + "framework_configuration.xsd"));
 		docFactory.setSchema(schema);
 
 		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -181,7 +189,8 @@ public class FrameworkConfigParser {
 		// root elements
 		Document doc = docBuilder.newDocument();
 		Element rootElement = doc.createElement("configuration");
-		rootElement.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation", "framework_configuration.xsd");
+		rootElement.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation",
+				"framework_configuration.xsd");
 		doc.appendChild(rootElement);
 
 		addOrganisatioInfo(doc, rootElement);
@@ -609,11 +618,13 @@ public class FrameworkConfigParser {
 
 			Element element = (Element) nNode;
 
-			// If profile is provided then look for configuration with given profile or else take default
+			// If profile is provided then look for configuration with given profile or else
+			// take default
 			if (element.hasAttributes()) {
 				if (profileName == null || !profileName.equals(element.getAttribute("profile").toString().trim())) {
 					if (profileName == null || temp == nList.getLength() - 1) {
-						System.err.println("[WARNING]: logger profile with name " + profileName + " does not exist. Applying default");
+						System.err.println("[WARNING]: logger profile with name " + profileName
+								+ " does not exist. Applying default");
 					}
 					continue;
 				}
@@ -628,7 +639,7 @@ public class FrameworkConfigParser {
 					if ("logLevel".equals(eElement.getAttribute("name"))) {
 						setLogLevel(eElement.getTextContent());
 					} else if ("logRootDir".equals(eElement.getAttribute("name"))) {
-						String rootDir = eElement.getTextContent();
+						String rootDir = Paths.get(eElement.getTextContent()).toString();
 						if (rootDir.endsWith("/") || rootDir.endsWith("\\")) {
 							setLogRootDir(rootDir);
 						} else {
@@ -671,11 +682,13 @@ public class FrameworkConfigParser {
 
 			Element element = (Element) nNode;
 
-			// If profile is provided then look for configuration with given profile or else take default
+			// If profile is provided then look for configuration with given profile or else
+			// take default
 			if (element.hasAttributes()) {
 				if (profileName == null || !profileName.equals(element.getAttribute("profile").toString().trim())) {
 					if (profileName == null || temp == nList.getLength() - 1) {
-						System.err.println("[WARNING]: features profile with name " + profileName + " does not exist. Applying default");
+						System.err.println("[WARNING]: features profile with name " + profileName
+								+ " does not exist. Applying default");
 					}
 					continue;
 				}
@@ -732,11 +745,13 @@ public class FrameworkConfigParser {
 
 			Element element = (Element) nNode;
 
-			// If profile is provided then look for configuration with given profile or else take default
+			// If profile is provided then look for configuration with given profile or else
+			// take default
 			if (element.hasAttributes()) {
 				if (profileName == null || !profileName.equals(element.getAttribute("profile").toString().trim())) {
 					if (profileName == null || temp == nList.getLength() - 1) {
-						System.err.println("[WARNING]: organization_info profile with name " + profileName + " does not exist. Applying default");
+						System.err.println("[WARNING]: organization_info profile with name " + profileName
+								+ " does not exist. Applying default");
 					}
 					continue;
 				}
@@ -787,11 +802,13 @@ public class FrameworkConfigParser {
 
 			Element element = (Element) nNode;
 
-			// If profile is provided then look for configuration with given profile or else take default
+			// If profile is provided then look for configuration with given profile or else
+			// take default
 			if (element.hasAttributes()) {
 				if (profileName == null || !profileName.equals(element.getAttribute("profile").toString().trim())) {
 					if (profileName == null || temp == nList.getLength() - 1) {
-						System.err.println("[WARNING]: dashboard profile with name " + profileName + " does not exist. Applying default");
+						System.err.println("[WARNING]: dashboard profile with name " + profileName
+								+ " does not exist. Applying default");
 					}
 					continue;
 				}
@@ -827,11 +844,13 @@ public class FrameworkConfigParser {
 
 			Element element = (Element) nNode;
 
-			// If profile is provided then look for configuration with given profile or else take default
+			// If profile is provided then look for configuration with given profile or else
+			// take default
 			if (element.hasAttributes()) {
 				if (profileName == null || !profileName.equals(element.getAttribute("profile").toString().trim())) {
 					if (profileName == null || temp == nList.getLength() - 1) {
-						System.err.println("[WARNING]: smtp_settings profile with name " + profileName + " does not exist. Applying default");
+						System.err.println("[WARNING]: smtp_settings profile with name " + profileName
+								+ " does not exist. Applying default");
 					}
 					continue;
 				}
@@ -853,7 +872,7 @@ public class FrameworkConfigParser {
 					} else if ("SendersName".equals(eElement.getAttribute("name"))) {
 						setEmailSendersName(eElement.getTextContent());
 					} else if ("emailAuthSettingsFilePath".equals(eElement.getAttribute("name"))) {
-						setEmailAuthSettingsFilePath(eElement.getTextContent());
+						setEmailAuthSettingsFilePath(Paths.get(eElement.getTextContent()).toString());
 					} else if ("ReceiversEmail".equals(eElement.getAttribute("name"))) {
 						setEmailReceiversEmail(eElement.getTextContent());
 					} else if ("ReceiversName".equals(eElement.getAttribute("name"))) {
@@ -1193,14 +1212,29 @@ public class FrameworkConfigParser {
 		return enableRealTimeLog;
 	}
 
+	/**
+	 * Enables real time log
+	 * 
+	 * @param enableRealTimeLog true|false
+	 */
 	public void setEnableRealTimeLog(boolean enableRealTimeLog) {
 		this.enableRealTimeLog = enableRealTimeLog;
 	}
 
+	/**
+	 * Return true or false based on configuration
+	 * 
+	 * @return true|false based on user setting
+	 */
 	public boolean isEnableLogCleanup() {
 		return enableLogCleanup;
 	}
 
+	/**
+	 * Enables log clean up
+	 * 
+	 * @param enableLogCleanup true|false
+	 */
 	public void setEnableLogCleanup(boolean enableLogCleanup) {
 		this.enableLogCleanup = enableLogCleanup;
 	}

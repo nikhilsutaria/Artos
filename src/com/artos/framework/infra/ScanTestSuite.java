@@ -33,9 +33,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.reflections.Reflections;
-import org.reflections.scanners.MethodAnnotationsScanner;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.scanners.Scanners;
+import org.reflections.util.ConfigurationBuilder;
 
 import com.artos.annotation.AfterFailedUnit;
 import com.artos.annotation.AfterTest;
@@ -53,7 +52,6 @@ import com.artos.annotation.TestDependency;
 import com.artos.annotation.TestImportance;
 import com.artos.annotation.TestPlan;
 import com.artos.annotation.Unit;
-import com.artos.framework.Enums.Importance;
 import com.artos.framework.FWStaticStore;
 import com.artos.interfaces.TestExecutable;
 
@@ -104,7 +102,8 @@ public class ScanTestSuite {
 	private void scan(String packageName) {
 
 		// Find all annotation
-		reflection = new Reflections(packageName, new MethodAnnotationsScanner(), new TypeAnnotationsScanner(), new SubTypesScanner(false));
+//		reflection = new Reflections(packageName, new MethodAnnotationsScanner(), new TypeAnnotationsScanner(), new SubTypesScanner(false));
+		reflection = new Reflections(new ConfigurationBuilder().forPackage(packageName).setScanners(Scanners.MethodsAnnotated, Scanners.TypesAnnotated, Scanners.SubTypes.filterResultsBy(s -> true)));
 
 		// GetAllDataProviderMethods => Filter Public methods => Get UpperCase DataProviderName => Store it
 		reflection.getMethodsAnnotatedWith(DataProvider.class).stream().filter(m -> Modifier.isPublic(m.getModifiers())).forEach(m -> {
@@ -240,31 +239,7 @@ public class ScanTestSuite {
 	private List<TestObjectWrapper> bubble_srt(List<TestObjectWrapper> testObjWrapperList) {
 		return testObjWrapperList.parallelStream().sorted(Comparator.comparing(t -> t.getTestsequence())).collect(Collectors.toList());
 	}
-
-	/**
-	 * Generates test plan using annotation provided in the test case classes
-	 * 
-	 * @param context Test Context
-	 * @return {@code TestPlanWrapper} list
-	 */
-	public List<TestPlanWrapper> getTestPlan(TestContext context) {
-		List<TestPlanWrapper> testPlanList = new ArrayList<>();
-		for (TestObjectWrapper testObject : testObjWrapperList_All) {
-			TestPlanWrapper testPlan = new TestPlanWrapper();
-
-			testPlan.setTestPlan(testObject.getTestClassObject().getName(), testObject.getTestPlanDescription(), testObject.getTestPlanPreparedBy(),
-					testObject.getTestPlanPreparationDate(), testObject.getTestreviewedBy(), testObject.getTestReviewDate(),
-					testObject.getTestPlanBDD());
-			testPlan.setTestPlanGroup(testObject.getGroupList().toString());
-			testPlan.setTestPlanKTF(testObject.isKTF(), testObject.getBugTrackingNumber());
-			testPlan.setTestPlanSkip(testObject.getTestsequence(), testObject.isSkipTest(), testObject.getDataProviderName());
-			testPlan.setTestImportance(Importance.getEnumName(testObject.getTestImportance().getValue()));
-
-			testPlanList.add(testPlan);
-		}
-		return testPlanList;
-	}
-
+	
 	/**
 	 * Returns all scanned test cases wrapped with TestObjWrapper components. if user has chosen to remove "SKIPPED" test cases then any test cases
 	 * marked with "skip=true" will be omitted from the list. If user has chosen to sort by sequence number then test cases will be sorted within
@@ -356,17 +331,15 @@ public class ScanTestSuite {
 	 * @param sortBySeqNum Enables sorting of the test cases (Sorting happens within package scope)
 	 * @param removeSkippedTests Enables removal of test cases which are marked 'Skip'
 	 * @return List of {@code TestExecutable}
-	 * @throws IllegalAccessException if the class or its nullary constructor is not accessible.
-	 * @throws InstantiationException if this Class represents an abstract class, an interface, an array class, a primitive type, or void; or if the
-	 *             class has no nullary constructor; or if the instantiation fails for some other reason.
+	 * @throws Exception exceptions
 	 */
-	public List<TestExecutable> getTestList(boolean sortBySeqNum, boolean removeSkippedTests) throws InstantiationException, IllegalAccessException {
+	public List<TestExecutable> getTestList(boolean sortBySeqNum, boolean removeSkippedTests) throws Exception {
 		List<TestExecutable> testList = new ArrayList<TestExecutable>();
 
 		List<TestObjectWrapper> testObjWrapperList = getTestObjWrapperList(sortBySeqNum, removeSkippedTests, true);
 		for (TestObjectWrapper t : testObjWrapperList) {
 			// create new Instance of test object so user can execute the test
-			testList.add((TestExecutable) t.getTestClassObject().newInstance());
+			testList.add((TestExecutable) t.getTestClassObject().getDeclaredConstructor().newInstance());
 		}
 		return testList;
 	}

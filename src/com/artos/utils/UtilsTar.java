@@ -35,13 +35,8 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
-import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.io.IOUtils;
 
-/**
- * 
- * 
- *
- */
 public class UtilsTar {
 
 	/**
@@ -113,7 +108,7 @@ public class UtilsTar {
 		TarArchiveEntry tarEntry = null;
 
 		// tarIn is a TarArchiveInputStream
-		while ((tarEntry = tis.getNextTarEntry()) != null) {
+		while ((tarEntry = tis.getNextEntry()) != null) {
 			File outputFile = new File(destFile + File.separator + tarEntry.getName());
 
 			if (tarEntry.isDirectory()) {
@@ -151,7 +146,7 @@ public class UtilsTar {
 		TarArchiveEntry tarEntry = null;
 
 		// tarIn is a TarArchiveInputStream
-		while ((tarEntry = tis.getNextTarEntry()) != null) {
+		while ((tarEntry = tis.getNextEntry()) != null) {
 			File outputFile = new File(destFile + File.separator + tarEntry.getName());
 
 			if (tarEntry.isDirectory()) {

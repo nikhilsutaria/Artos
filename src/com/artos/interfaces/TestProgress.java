@@ -30,7 +30,8 @@ import com.artos.framework.infra.TestObjectWrapper;
 import com.artos.framework.infra.TestUnitObjectWrapper;
 
 /**
- * Interface recommended for any listener which requires to be notified test progress events.
+ * Interface recommended for any listener which requires to be notified test
+ * progress events.
  */
 public interface TestProgress {
 
@@ -39,7 +40,8 @@ public interface TestProgress {
 	// ==========================================================
 
 	/**
-	 * Method is called when test loop execution starts, This method is called same number of time as loop count set by user.
+	 * Method is called when test loop execution starts, This method is called same
+	 * number of time as loop count set by user.
 	 * 
 	 * @param count number of test suite execution loop count
 	 */
@@ -52,7 +54,7 @@ public interface TestProgress {
 	/**
 	 * Method is called before {@code BeforeTestSuite} method execution starts
 	 * 
-	 * @param methodName method name
+	 * @param methodName  method name
 	 * @param description description/name of the test suite
 	 */
 	public void beforeTestSuiteMethodExecutionStarted(String methodName, String description);
@@ -81,7 +83,7 @@ public interface TestProgress {
 	/**
 	 * Method is called before {@code AfterTestSuite} method execution starts
 	 * 
-	 * @param methodName method name
+	 * @param methodName  method name
 	 * @param description description/name of the test suite
 	 */
 	public void afterTestSuiteMethodExecutionStarted(String methodName, String description);
@@ -105,6 +107,11 @@ public interface TestProgress {
 	 */
 	public void printTestPlan(TestObjectWrapper t);
 
+	/**
+	 * Method is called before {@code BeforeTest} method execution starts
+	 * 
+	 * @param sc {@link BDDScenario}
+	 */
 	public void printTestPlan(BDDScenario sc);
 
 	/**
@@ -115,6 +122,11 @@ public interface TestProgress {
 	 */
 	public void printTestUnitPlan(TestUnitObjectWrapper unit);
 
+	/**
+	 * Method is called before {@code BeforeTestUnit} method execution starts
+	 * 
+	 * @param step {@link BDDStep}
+	 */
 	public void printTestUnitPlan(BDDStep step);
 
 	// ==========================================================
@@ -124,11 +136,17 @@ public interface TestProgress {
 	 * Method is called before global {@code BeforeTestUnit} method execution starts
 	 * 
 	 * @param methodName method name annotated with {@code BeforeTestUnit}
-	 * @param unit test unit object wrapper
+	 * @param unit       test unit object wrapper
 	 * @see TestUnitObjectWrapper
 	 */
 	public void globalBeforeTestUnitMethodExecutionStarted(String methodName, TestUnitObjectWrapper unit);
 
+	/**
+	 * Method is called before global {@code BeforeTestUnit} method execution starts
+	 * 
+	 * @param methodName method name
+	 * @param step       {@link BDDStep}
+	 */
 	public void globalBeforeTestUnitMethodExecutionStarted(String methodName, BDDStep step);
 
 	/**
@@ -139,28 +157,45 @@ public interface TestProgress {
 	 */
 	public void globalBeforeTestUnitMethodExecutionFinished(TestUnitObjectWrapper unit);
 
+	/**
+	 * Method is called after global {@code BeforeTestUnit} method execution starts
+	 * 
+	 * @param step {@link BDDStep}
+	 */
 	public void globalBeforeTestUnitMethodExecutionFinished(BDDStep step);
 
 	/**
 	 * Method is called after global {@code AfterTestUnit} method execution starts
 	 * 
 	 * @param methodName method name annotated with {@code AfterTestUnit}
-	 * @param unit test unit object wrapper
+	 * @param unit       test unit object wrapper
 	 * @see TestUnitObjectWrapper
 	 */
 	public void globalAfterTestUnitMethodExecutionStarted(String methodName, TestUnitObjectWrapper unit);
 
+	/**
+	 * Method is called after global {@code AfterTestUnit} method execution starts
+	 * 
+	 * @param methodName method name
+	 * @param step       {@link BDDStep}
+	 */
 	public void globalAfterTestUnitMethodExecutionStarted(String methodName, BDDStep step);
 
 	/**
 	 * Method is called after global {@code AfterFailedUnit} method execution starts
 	 * 
 	 * @param methodName method name annotated with {@code AfterTestUnit}
-	 * @param unit test unit object wrapper
+	 * @param unit       test unit object wrapper
 	 * @see TestUnitObjectWrapper
 	 */
 	public void globalAfterFailedUnitMethodExecutionStarted(String methodName, TestUnitObjectWrapper unit);
 
+	/**
+	 * Method is called after global {@code AfterFailedUnit} method execution starts
+	 * 
+	 * @param methodName method name
+	 * @param step       {@link BDDStep}
+	 */
 	public void globalAfterFailedUnitMethodExecutionStarted(String methodName, BDDStep step);
 
 	/**
@@ -181,12 +216,17 @@ public interface TestProgress {
 	 */
 	public void globalAfterFailedUnitMethodExecutionFinished(TestUnitObjectWrapper unit);
 
+	/**
+	 * Method is called after global {@code AfterFailedUnit} method execution starts
+	 * 
+	 * @param step {@link BDDStep}
+	 */
 	public void globalAfterFailedUnitMethodExecutionFinished(BDDStep step);
 
 	/**
 	 * Method is called before local {@code BeforeTestUnit} method execution starts
 	 * 
-	 * @param t test object wrapper
+	 * @param t    test object wrapper
 	 * @param unit test unit object wrapper
 	 * @see TestUnitObjectWrapper
 	 */
@@ -203,7 +243,7 @@ public interface TestProgress {
 	/**
 	 * Method is called after local {@code AfterTestUnit} method execution starts
 	 * 
-	 * @param t test object wrapper
+	 * @param t    test object wrapper
 	 * @param unit test unit object wrapper
 	 * @see TestUnitObjectWrapper
 	 */
@@ -241,11 +281,17 @@ public interface TestProgress {
 	 * Method is called before {@code BeforeTest} method execution starts
 	 * 
 	 * @param methodName method name
-	 * @param t test object wrapper
+	 * @param t          test object wrapper
 	 * @see TestObjectWrapper
 	 */
 	public void globalBeforeTestCaseMethodExecutionStarted(String methodName, TestObjectWrapper t);
 
+	/**
+	 * Method is called before {@code BeforeTest} method execution starts
+	 * 
+	 * @param methodName method name
+	 * @param scenario   {@link BDDScenario}
+	 */
 	public void globalBeforeTestCaseMethodExecutionStarted(String methodName, BDDScenario scenario);
 
 	/**
@@ -256,17 +302,28 @@ public interface TestProgress {
 	 */
 	public void globalBeforeTestCaseMethodExecutionFinished(TestObjectWrapper t);
 
+	/**
+	 * Method is called after {@code BeforeTest} method execution finishes
+	 * 
+	 * @param scenario {@link BDDScenario}
+	 */
 	public void globalBeforeTestCaseMethodExecutionFinished(BDDScenario scenario);
 
 	/**
 	 * Method is called before {@code AfterTest} method execution started
 	 * 
 	 * @param methodName method name
-	 * @param t test object wrapper
+	 * @param t          test object wrapper
 	 * @see TestObjectWrapper
 	 */
 	public void globalAfterTestCaseMethodExecutionStarted(String methodName, TestObjectWrapper t);
 
+	/**
+	 * Method is called before {@code AfterTest} method execution started
+	 * 
+	 * @param methodName method name
+	 * @param scenario   {@link BDDScenario}
+	 */
 	public void globalAfterTestCaseMethodExecutionStarted(String methodName, BDDScenario scenario);
 
 	/**
@@ -277,13 +334,18 @@ public interface TestProgress {
 	 */
 	public void globalAfterTestCaseMethodExecutionFinished(TestObjectWrapper t);
 
+	/**
+	 * Method is called after {@code AfterTest} method execution finishes
+	 * 
+	 * @param scenario {@link BDDScenario}
+	 */
 	public void globalAfterTestCaseMethodExecutionFinished(BDDScenario scenario);
 
 	/**
 	 * Method is called before {@code BeforeTest} method execution starts
 	 * 
 	 * @param methodName method name
-	 * @param t test object wrapper
+	 * @param t          test object wrapper
 	 * @see TestObjectWrapper
 	 */
 	public void localBeforeTestCaseMethodExecutionStarted(String methodName, TestObjectWrapper t);
@@ -300,7 +362,7 @@ public interface TestProgress {
 	 * Method is called before {@code AfterTest} method execution started
 	 * 
 	 * @param methodName method name
-	 * @param t test object wrapper
+	 * @param t          test object wrapper
 	 * @see TestObjectWrapper
 	 */
 	public void localAfterTestCaseMethodExecutionStarted(String methodName, TestObjectWrapper t);
@@ -324,6 +386,11 @@ public interface TestProgress {
 	 */
 	public void testCaseExecutionStarted(TestObjectWrapper t);
 
+	/**
+	 * Method is called when Scenario execution starts
+	 * 
+	 * @param scenario {@link BDDScenario}
+	 */
 	public void testCaseExecutionStarted(BDDScenario scenario);
 
 	/**
@@ -334,6 +401,11 @@ public interface TestProgress {
 	 */
 	public void testCaseExecutionFinished(TestObjectWrapper t);
 
+	/**
+	 * Method is called when Scenario execution finishes
+	 * 
+	 * @param scenario {@link BDDScenario}
+	 */
 	public void testCaseExecutionFinished(BDDScenario scenario);
 
 	/**
@@ -344,6 +416,11 @@ public interface TestProgress {
 	 */
 	public void testUnitExecutionStarted(TestUnitObjectWrapper unit);
 
+	/**
+	 * Method is called when Scenario step execution starts
+	 * 
+	 * @param step {@link BDDStep}
+	 */
 	public void testUnitExecutionStarted(BDDStep step);
 
 	/**
@@ -354,8 +431,13 @@ public interface TestProgress {
 	 */
 	public void testUnitExecutionFinished(TestUnitObjectWrapper unit);
 
+	/**
+	 * Method is called when Scenario step execution finishes
+	 * 
+	 * @param step {@link BDDStep}
+	 */
 	public void testUnitExecutionFinished(BDDStep step);
-	
+
 	// ==========================================================
 	// Test Skip
 	// ==========================================================
@@ -373,12 +455,18 @@ public interface TestProgress {
 	/**
 	 * Method is called when child test execution starts
 	 * 
-	 * @param t test object wrapper
+	 * @param t         test object wrapper
 	 * @param paramInfo parameterInfo
 	 * @see TestObjectWrapper
 	 */
 	public void childTestCaseExecutionStarted(TestObjectWrapper t, String paramInfo);
 
+	/**
+	 * Method is called when child Scenario execution starts
+	 * 
+	 * @param scenario  {@link BDDScenario}
+	 * @param paramInfo parameter info
+	 */
 	public void childTestCaseExecutionStarted(BDDScenario scenario, String paramInfo);
 
 	/**
@@ -389,18 +477,30 @@ public interface TestProgress {
 	 */
 	public void childTestCaseExecutionFinished(TestObjectWrapper t);
 
+	/**
+	 * Method is called when child Scenario execution finishes
+	 * 
+	 * @param scenario {@link BDDScenario}
+	 */
 	public void childTestCaseExecutionFinished(BDDScenario scenario);
 
 	/**
 	 * Method is called when unit child test execution starts
 	 * 
-	 * @param t test object wrapper
-	 * @param unit test unit object wrapper
+	 * @param t         test object wrapper
+	 * @param unit      test unit object wrapper
 	 * @param paramInfo parameterInfo
 	 * @see TestUnitObjectWrapper
 	 */
 	public void childTestUnitExecutionStarted(TestObjectWrapper t, TestUnitObjectWrapper unit, String paramInfo);
 
+	/**
+	 * Method is called when child Scenario steps execution starts
+	 * 
+	 * @param scenario  {@link BDDScenario}
+	 * @param step      {@link BDDStep}
+	 * @param paramInfo parameter info
+	 */
 	public void childTestUnitExecutionStarted(BDDScenario scenario, BDDStep step, String paramInfo);
 
 	/**
@@ -411,6 +511,11 @@ public interface TestProgress {
 	 */
 	public void childTestUnitExecutionFinished(TestUnitObjectWrapper unit);
 
+	/**
+	 * Method is called when child Scenario step execution finishes
+	 * 
+	 * @param step {@link BDDStep}
+	 */
 	public void childTestUnitExecutionFinished(BDDStep step);
 
 	// ==========================================================
@@ -420,8 +525,8 @@ public interface TestProgress {
 	 * Method is called when user updates test status.
 	 * 
 	 * @param testStatus Test status set by user
-	 * @param snapshot picture file or null
-	 * @param msg description/reason provided by user
+	 * @param snapshot   picture file or null
+	 * @param msg        description/reason provided by user
 	 * @see TestStatus
 	 */
 	public void testCaseStatusUpdate(TestStatus testStatus, File snapshot, String msg);
@@ -432,9 +537,9 @@ public interface TestProgress {
 	/**
 	 * Method is called when test result is finalised.
 	 * 
-	 * @param t test object wrapper
-	 * @param testStatus Test status set by user
-	 * @param snapshot picture file or null
+	 * @param t           test object wrapper
+	 * @param testStatus  Test status set by user
+	 * @param snapshot    picture file or null
 	 * @param description bug tracking info (Ticket/JIRA number)
 	 * @see TestStatus
 	 */
@@ -443,18 +548,19 @@ public interface TestProgress {
 	/**
 	 * Method is called when test result is finalised.
 	 * 
-	 * @param scenario test scenario object
-	 * @param testStatus Test status set by user
-	 * @param snapshot picture file or null
+	 * @param scenario    test scenario object
+	 * @param testStatus  Test status set by user
+	 * @param snapshot    picture file or null
 	 * @param description bug tracking info (Ticket/JIRA number)
 	 * @see TestStatus
 	 */
 	public void testResult(BDDScenario scenario, TestStatus testStatus, File snapshot, String description);
 
 	/**
-	 * Method is called when test case execution is finished and summary requires to be printed
+	 * Method is called when test case execution is finished and summary requires to
+	 * be printed
 	 * 
-	 * @param FQCN testcase name0
+	 * @param FQCN        testcase name0
 	 * @param description description/summary statement
 	 */
 	public void testCaseSummaryPrinting(String FQCN, String description);
@@ -462,25 +568,36 @@ public interface TestProgress {
 	/**
 	 * Method is called when test unit result is finalised.
 	 * 
-	 * @param unit unit object wrapper
-	 * @param testStatus Test status set by user
-	 * @param snapshot picture file or null
+	 * @param unit        unit object wrapper
+	 * @param testStatus  Test status set by user
+	 * @param snapshot    picture file or null
 	 * @param description bug tracking info (Ticket/JIRA number)
 	 * @see TestStatus
 	 */
 	public void testUnitResult(TestUnitObjectWrapper unit, TestStatus testStatus, File snapshot, String description);
+
+	/**
+	 * Method is called when step result is finalised.
+	 * 
+	 * @param step        {@link BDDStep}
+	 * @param testStatus  {@link TestStatus}
+	 * @param snapshot    picture file or null
+	 * @param description bug tracking info (Ticket/JIRA number)
+	 */
 	public void testUnitResult(BDDStep step, TestStatus testStatus, File snapshot, String description);
 
 	/**
-	 * Method is called when test unit execution is finished and summary requires to be printed
+	 * Method is called when test unit execution is finished and summary requires to
+	 * be printed
 	 * 
-	 * @param FQCN testcase name0
+	 * @param FQCN        testcase name0
 	 * @param description description/summary statement
 	 */
 	public void testUnitSummaryPrinting(String FQCN, String description);
 
 	/**
-	 * Method is called when test suite execution is finished and summary requires to be printed
+	 * Method is called when test suite execution is finished and summary requires
+	 * to be printed
 	 * 
 	 * @param description description/summary statement
 	 */
@@ -490,7 +607,8 @@ public interface TestProgress {
 	// Test Suite Failure Highlight
 	// ==========================================================
 	/**
-	 * Method is called when test suite execution is finished and at the end failure highlight is required.
+	 * Method is called when test suite execution is finished and at the end failure
+	 * highlight is required.
 	 * 
 	 * @param description description/summary statement
 	 */
@@ -500,7 +618,8 @@ public interface TestProgress {
 	// Test Exception
 	// ==========================================================
 	/**
-	 * Method is called when exception is thrown during test suite execution which can not be handled on test level
+	 * Method is called when exception is thrown during test suite execution which
+	 * can not be handled on test level
 	 * 
 	 * @param e an error/exception/throwable
 	 */
